@@ -36,5 +36,10 @@ namespace TodoApp.Domain.Entities
             Status = status;
             ExpirationDate = expirationDate;
         }
+
+        public void ToggleStatus(string newStatus)
+        {
+            Status = newStatus;
+        }
     }
 }

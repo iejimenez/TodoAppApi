@@ -51,6 +51,16 @@ namespace TodoApp.Application.Services
         {
             await _todoTaskRepository.DeleteAsync(id);
         }
+        public async Task<TodoTaskDto> ToggleStatusAsync(Guid id)
+        {
+            var todoTaskBd = await _todoTaskRepository.GetByIdAsync(id);
+            if (todoTaskBd == null)
+                throw new KeyNotFoundException($"La tarea con ID {id} no fue encontrada.");
+
+            todoTaskBd.ToggleStatus(todoTaskBd.Status == "Completada" ? "Pendiente" : "Completada");
+            await _todoTaskRepository.UpdateAsync(todoTaskBd);
+            return MapToDto(todoTaskBd);
+        }
         private static TodoTaskDto MapToDto(TodoTask todoTask)
         {
             return new TodoTaskDto

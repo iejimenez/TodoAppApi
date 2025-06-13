@@ -71,5 +71,19 @@ namespace TodoApp.Api.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPatch("{id}/toggle")]
+        public async Task<IActionResult> Toggle(Guid id)
+        {
+            try
+            {
+                await _todoTaskService.ToggleStatusAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
     }
 }

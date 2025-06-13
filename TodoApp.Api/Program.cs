@@ -23,7 +23,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Add Repositories
 builder.Services.AddScoped<ITodoTaskRespository, TodoTaskRepoditory>();
 builder.Services.AddScoped<ITodoTaskService, TodoTaskService>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularDevServer",
+        builder => builder
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 
+// ... y en la configuración de la app:
 
 var app = builder.Build();
 
@@ -34,6 +43,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("AllowAngularDevServer");
 
 app.UseHttpsRedirection();
 
