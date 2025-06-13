@@ -29,16 +29,24 @@ namespace TodoApp.Application.Services
             return MapToDto(todoTask);
         }
 
-        private static TodoTaskDto MapToDto(TodoTask todo)
+        
+        public async Task<TodoTaskDto> CreateAsync(CreateTodoTaskDto createTodoTaskDto)
+        {
+            var todoTask = new TodoTask(createTodoTaskDto.Title, createTodoTaskDto.Description, createTodoTaskDto.Status, createTodoTaskDto.ExpirationDate);
+            await _todoTaskRepository.AddAsync(todoTask);
+            return MapToDto(todoTask);
+        }
+        private static TodoTaskDto MapToDto(TodoTask todoTask)
         {
             return new TodoTaskDto
             {
-                Id = todo.Id,
-                Title = todo.Title,
-                Description = todo.Description,
-                IsCompleted = todo.IsCompleted,
-                CreatedAt = todo.CreatedAt,
-                CompletedAt = todo.CompletedAt
+                Id = todoTask.Id,
+                Title = todoTask.Title,
+                Description = todoTask.Description,
+                Status = todoTask.Status,
+                ExpirationDate = todoTask.ExpirationDate,
+                CreatedAt = todoTask.CreatedAt,
+                CompletedAt = todoTask.CompletedAt
             };
         }
 
