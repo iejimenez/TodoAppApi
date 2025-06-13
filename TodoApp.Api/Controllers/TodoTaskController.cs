@@ -35,5 +35,13 @@ namespace TodoApp.Api.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult<TodoTaskDto>> Create(CreateTodoTaskDto createTodoTaskDto)
+        {
+            var todo = await _todoTaskService.CreateAsync(createTodoTaskDto);
+            return CreatedAtAction(nameof(GetById), new { id = todo.Id }, todo);
+        }
+
     }
 }
