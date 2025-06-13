@@ -39,8 +39,8 @@ namespace TodoApp.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<TodoTaskDto>> Create(CreateTodoTaskDto createTodoTaskDto)
         {
-            var todo = await _todoTaskService.CreateAsync(createTodoTaskDto);
-            return CreatedAtAction(nameof(GetById), new { id = todo.Id }, todo);
+            var todoTask = await _todoTaskService.CreateAsync(createTodoTaskDto);
+            return Ok(todoTask);
         }
 
     }
