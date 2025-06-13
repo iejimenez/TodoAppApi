@@ -5,6 +5,7 @@ using TodoApi.Infrastructure.Repositories;
 using TodoApp.Application.Interfaces;
 using TodoApp.Application.Services;
 using TodoApp.Domain.Repositories;
+using TodoApp.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors("AllowAngularDevServer");
+
+// Add global exception handling middleware
+app.UseGlobalExceptionHandler();
 
 app.UseHttpsRedirection();
 
