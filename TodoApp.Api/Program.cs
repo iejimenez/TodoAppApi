@@ -32,8 +32,8 @@ builder.Services.AddSwaggerGen(c =>
         Description = "API para gestión de tareas",
         Contact = new OpenApiContact
         {
-            Name = "Tu Nombre",
-            Email = "tu@email.com"
+            Name = "Ivan Jimenez",
+            Email = "iejimenez01@gmail.com"
         }
     });
 });
@@ -43,13 +43,19 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 // Add Repositories
 builder.Services.AddScoped<ITodoTaskRespository, TodoTaskRepoditory>();
 builder.Services.AddScoped<ITodoTaskService, TodoTaskService>();
+
+// Configuración de CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularDevServer",
         builder => builder
-            .WithOrigins("http://localhost:4200", "https://todoappclient-690260275830.northamerica-northeast2.run.app/")
+            .WithOrigins(
+                "http://localhost:4200",
+                "https://todoappclient-690260275830.northamerica-northeast2.run.app"
+            )
             .AllowAnyMethod()
-            .AllowAnyHeader());
+            .AllowAnyHeader()
+            .AllowCredentials());
 });
 
 var app = builder.Build();
@@ -63,6 +69,7 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
+// Importante: UseCors debe ir antes de UseAuthorization
 app.UseCors("AllowAngularDevServer");
 
 // Add global exception handling middleware
