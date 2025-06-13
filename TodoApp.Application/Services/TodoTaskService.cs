@@ -47,6 +47,10 @@ namespace TodoApp.Application.Services
             await _todoTaskRepository.UpdateAsync(todoTaskBd);
             return MapToDto(todoTaskBd);
         }
+        public async Task DeleteAsync(Guid id)
+        {
+            await _todoTaskRepository.DeleteAsync(id);
+        }
         private static TodoTaskDto MapToDto(TodoTask todoTask)
         {
             return new TodoTaskDto

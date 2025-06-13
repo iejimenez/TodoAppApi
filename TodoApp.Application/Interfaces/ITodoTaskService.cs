@@ -13,5 +13,7 @@ namespace TodoApp.Application.Interfaces
         Task<IEnumerable<TodoTaskDto>> GetAllAsync();
         Task<TodoTaskDto> CreateAsync(CreateTodoTaskDto createTodoTaskDto);
         Task<TodoTaskDto> UpdateAsync(Guid id, UpdateTodoTaskDto updateTodoTaskDto);
+
+        Task DeleteAsync(Guid id);
     }
 }
