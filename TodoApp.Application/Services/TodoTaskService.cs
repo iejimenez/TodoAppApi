@@ -36,6 +36,17 @@ namespace TodoApp.Application.Services
             await _todoTaskRepository.AddAsync(todoTask);
             return MapToDto(todoTask);
         }
+
+        public async Task<TodoTaskDto> UpdateAsync(Guid id, UpdateTodoTaskDto updateTodoDto)
+        {
+            var todoTaskBd = await _todoTaskRepository.GetByIdAsync(id);
+            if (todoTaskBd == null)
+                throw new KeyNotFoundException($"La tarea con ID {id} no fue encontrada.");
+
+            todoTaskBd.Update(updateTodoDto.Title, updateTodoDto.Description, updateTodoDto.Status, updateTodoDto.ExpirationDate);
+            await _todoTaskRepository.UpdateAsync(todoTaskBd);
+            return MapToDto(todoTaskBd);
+        }
         private static TodoTaskDto MapToDto(TodoTask todoTask)
         {
             return new TodoTaskDto

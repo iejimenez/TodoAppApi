@@ -28,5 +28,13 @@ namespace TodoApp.Domain.Entities
             ExpirationDate = expirationDate;
             CreatedAt = DateTime.UtcNow;
         }
+
+        public void Update(string title, string description, string status, DateTime expirationDate)
+        {
+            Title = title;
+            Description = description;
+            Status = status;
+            ExpirationDate = expirationDate;
+        }
     }
 }

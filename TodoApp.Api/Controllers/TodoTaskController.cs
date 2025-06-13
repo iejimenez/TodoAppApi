@@ -43,5 +43,19 @@ namespace TodoApp.Api.Controllers
             return Ok(todoTask);
         }
 
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<TodoTaskDto>> Update(Guid id, UpdateTodoTaskDto updateTodoTaskDto)
+        {
+            try
+            {
+                var todoTask = await _todoTaskService.UpdateAsync(id, updateTodoTaskDto);
+                return Ok(todoTask);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
     }
 }
