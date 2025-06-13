@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using TodoApi.Infrastructure.Data;
 using TodoApi.Infrastructure.Repositories;
 using TodoApp.Application.Interfaces;
@@ -17,8 +18,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.AddNpgsqlDbContext<ApplicationDbContext>("DefaultConnection");
+
 
 // Add Repositories
 builder.Services.AddScoped<ITodoTaskRespository, TodoTaskRepoditory>();
