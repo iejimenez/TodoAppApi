@@ -10,6 +10,7 @@ using FluentValidation;
 using TodoApp.Application.Validators;
 using TodoApp.Application.DTOs;
 using FluentValidation.AspNetCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,20 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateTodoTaskDtoValidator>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo 
+    { 
+        Title = "TodoApp API", 
+        Version = "v1",
+        Description = "API para gestión de tareas",
+        Contact = new OpenApiContact
+        {
+            Name = "Tu Nombre",
+            Email = "tu@email.com"
+        }
+    });
+});
 
 builder.AddNpgsqlDbContext<ApplicationDbContext>("DefaultConnection");
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -33,7 +47,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularDevServer",
         builder => builder
-            .WithOrigins("http://localhost:4200")
+            .WithOrigins("http://localhost:4200", "https://todoappclient-690260275830.northamerica-northeast2.run.app/")
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
@@ -41,11 +55,13 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Habilitar Swagger en todos los entornos
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApp API v1");
+    c.RoutePrefix = "swagger";
+});
 
 app.UseCors("AllowAngularDevServer");
 
